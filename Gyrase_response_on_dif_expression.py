@@ -29,15 +29,15 @@ import math
 print('Variables to be defined:')
 
 #Path to TUs sets with transcription level.
-path_to_TUs_sets_no_rRNA_tRNA={'EP' : "F:\E_coli_RNA-Seq\E_coli_DY330_RNA-Seq\Expression_data\DY330_genes\DY330_RNA-Seq_genes_no_tRNA_rRNA_EP_del_cor.txt",
-                               'ESP' : "F:\E_coli_RNA-Seq\E_coli_DY330_RNA-Seq\Expression_data\DY330_genes\DY330_RNA-Seq_genes_no_tRNA_rRNA_ESP_del_cor.txt",
-                               'SP' : "F:\E_coli_RNA-Seq\E_coli_DY330_RNA-Seq\Expression_data\DY330_genes\DY330_RNA-Seq_genes_no_tRNA_rRNA_SP_del_cor.txt"}
+path_to_TUs_sets_no_rRNA_tRNA={'EP' : "D:\Sutormin\HDD_WD_recovered_07_11_19\\34148\E_coli_RNA-Seq\E_coli_DY330_RNA-Seq\Expression_data\DY330_genes\DY330_RNA-Seq_genes_no_tRNA_rRNA_EP_del_cor.txt",
+                               'ESP' : "D:\Sutormin\HDD_WD_recovered_07_11_19\\34148\E_coli_RNA-Seq\E_coli_DY330_RNA-Seq\Expression_data\DY330_genes\DY330_RNA-Seq_genes_no_tRNA_rRNA_ESP_del_cor.txt",
+                               'SP' : "D:\Sutormin\HDD_WD_recovered_07_11_19\\34148\E_coli_RNA-Seq\E_coli_DY330_RNA-Seq\Expression_data\DY330_genes\DY330_RNA-Seq_genes_no_tRNA_rRNA_SP_del_cor.txt"}
 
 #Path to GCSs number in US, GB, DS of TUs.
-path_to_GCSs_number="F:\Topo_data_new_expression\TU_based_analysis\Gyrase\Correction_on_GCSs_calling_thr\Genes_del_cor_no_rRNA_tRNA_5000bp\GCSs_US_GB_DS\Early stationary phase_numbers_of_associated_GCSs_US_GB_DS.txt"
+path_to_GCSs_number="D:\Sutormin\HDD_WD_recovered_07_11_19\\34148\Topo_data_new_expression\TU_based_analysis\Gyrase\Correction_on_GCSs_calling_thr\Genes_del_cor_no_rRNA_tRNA_5000bp\GCSs_US_GB_DS\Early stationary phase_numbers_of_associated_GCSs_US_GB_DS.txt"
 
 #Path to differential expression data (edgeR table).
-path_dif_exp="F:\E_coli_RNA-Seq\E_coli_DY330_RNA-Seq\FPKM_analysis_correct\Genes_del_cor\EdgeR_analysis_dif_expression\E_vs_ES_DE_no_tRNA_rRNA.txt"
+path_dif_exp="D:\Sutormin\HDD_WD_recovered_07_11_19\\34148\E_coli_RNA-Seq\E_coli_DY330_RNA-Seq\FPKM_analysis_correct\Genes_del_cor\EdgeR_analysis_dif_expression\E_vs_S_DE_no_tRNA_rRNA.txt"
 
 #Genome length, bp
 Genome_len=4647454
@@ -51,7 +51,7 @@ GCSs_num_dict={'EP' : 1673,
                'SP': 3508}
 
 #Outpath.
-GCSs_and_transcription_outpath="F:\Topo_data_new_expression\TU_based_analysis\Gyrase\Correction_on_GCSs_calling_thr\Genes_del_cor_no_rRNA_tRNA_5000bp\GCSs_US_GB_DS\Figures\Increasing_SP_vs_EP\\"
+GCSs_and_transcription_outpath="C:\\Users\sutor\OneDrive\ThinkPad_working\Sutor\Science\E_coli_Gyrase_growth_phases\Data_analysis\Genes_del_cor_no_rRNA_tRNA_5000bp\\"
 if not os.path.exists(GCSs_and_transcription_outpath):
     os.makedirs(GCSs_and_transcription_outpath)
     
@@ -103,6 +103,7 @@ def read_tr_merge(dict_of_pathes, outpath):
     Merged_transcription_data['SP/ESP']=Merged_transcription_data['Expression_S']/Merged_transcription_data['Expression_ES']
     Merged_transcription_data['ESP/SP']=Merged_transcription_data['Expression_ES']/Merged_transcription_data['Expression_S']
     Merged_transcription_data['SP/EP']=Merged_transcription_data['Expression_S']/Merged_transcription_data['Expression_E']
+    Merged_transcription_data['SP/EP']=Merged_transcription_data['Expression_E']/Merged_transcription_data['Expression_S']
     
     Merged_transcription_data.replace([np.inf, -np.inf], np.nan)
     Merged_transcription_data=Merged_transcription_data.dropna(axis=0)
@@ -134,6 +135,7 @@ def read_gcss_data_merge_transcription(path_to_GCSs, Merged_transcription_data):
 #######
 
 def calc_GCSs_expected_number_calc_enrichment(transcription_GCSs_data, USDS_window, genome_dc_len, GCSs_numbers_dict):
+    #Enrichment in the number of GCSs in comparison to random distribution of GCSs.
     for condition, GCSs_num in GCSs_numbers_dict.items():
         GCSs_expected=(USDS_window/float(genome_dc_len))*GCSs_num
         print(f'Number of GCSs expected in US/DS for {condition}: {GCSs_expected}')
@@ -237,7 +239,7 @@ def convert_df_to_array_of_vectors(input_dataframe):
 #Select data by changes in transcription.
 #######
 
-def select_data_by_transcr(transcription_GCSs_data, cond2, cond1, threshold):
+def select_data_by_transcr(transcription_GCSs_data, cond1, cond2, threshold):
     ratio_type=f'{cond2}/{cond1}'
     #Sort dataframe by ratio between conditions.
     transcription_GCSs_data_sorted=transcription_GCSs_data.sort_values(by=ratio_type, ascending=True)
@@ -250,8 +252,6 @@ def select_data_by_transcr(transcription_GCSs_data, cond2, cond1, threshold):
     print(Group1.shape, Group2.shape)
     print(Group1.head(5), '\n')
     print(Group2.head(5), '\n')
-    cond1='EP'
-    cond2='SP'
     #Specify columns with GCSs enrichment for conditions under the scope.
     columns_names=[f'{cond1} US enr', f'{cond2} US enr', f'{cond1} GB enr', f'{cond2} GB enr', f'{cond1} DS enr', f'{cond2} DS enr']
     #Enrichment for increasing transcription.
@@ -274,16 +274,18 @@ def select_data_by_transcr(transcription_GCSs_data, cond2, cond1, threshold):
 #######
 
 def plot_GCSs_enr_distr(cond1, cond2, dataframe, sign, thr_pvalue, thr_logFC, outpath):
-    fig=plt.figure(figsize=(9, 3))
+    fig=plt.figure(figsize=(9.7, 3))
     #Plot distribution of GCSs enrichment in US.
     plot0=plt.subplot(131)
     bins0=np.histogram(np.hstack((dataframe[f'{cond1} US enr'].tolist(), dataframe[f'{cond2} US enr'].tolist())), bins=15)[1]
-    plot0.hist(dataframe[f'{cond1} US enr'].tolist(), bins0, edgecolor='black', linewidth=0.5, density=True, alpha=0.4, label=cond1)
-    plot0.hist(dataframe[f'{cond2} US enr'].tolist(), bins0, edgecolor='black', linewidth=0.5, density=True, alpha=0.4, label=cond2)
-    Cond1_med=np.median(dataframe[f'{cond1} US enr'].tolist())
-    Cond2_med=np.median(dataframe[f'{cond2} US enr'].tolist())
-    plot0.annotate(f'{cond1} median={round(Cond1_med,2)}', xy=(0.2, 0.9), xycoords='axes fraction', size=15)
-    plot0.annotate(f'{cond2} median={round(Cond2_med,2)}', xy=(0.2, 0.8), xycoords='axes fraction', size=15)
+    weights1_US=np.ones_like(dataframe[f'{cond1} US enr'].tolist())/float(len(dataframe[f'{cond1} US enr'].tolist()))
+    weights2_US=np.ones_like(dataframe[f'{cond2} US enr'].tolist())/float(len(dataframe[f'{cond2} US enr'].tolist()))    
+    plot0.hist(dataframe[f'{cond1} US enr'].tolist(), bins0, edgecolor='black', linewidth=0.5, weights=weights1_US, alpha=0.4, label=cond1)
+    plot0.hist(dataframe[f'{cond2} US enr'].tolist(), bins0, edgecolor='black', linewidth=0.5, weights=weights2_US, alpha=0.4, label=cond2)
+    Cond1_med=np.mean(dataframe[f'{cond1} US enr'].tolist())
+    Cond2_med=np.mean(dataframe[f'{cond2} US enr'].tolist())
+    plot0.annotate(f'{cond1} mean={round(Cond1_med,2)}', xy=(0.2, 0.9), xycoords='axes fraction', size=15)
+    plot0.annotate(f'{cond2} mean={round(Cond2_med,2)}', xy=(0.2, 0.8), xycoords='axes fraction', size=15)
     Cond1_num=len(dataframe[f'{cond1} US enr'].tolist())
     Cond2_num=len(dataframe[f'{cond2} US enr'].tolist())
     plot0.annotate(f'TUs={Cond1_num}', xy=(0.2, 0.7), xycoords='axes fraction', size=15)
@@ -294,12 +296,14 @@ def plot_GCSs_enr_distr(cond1, cond2, dataframe, sign, thr_pvalue, thr_logFC, ou
     #Plot distribution of GCSs enrichment in GB.
     plot1=plt.subplot(132)
     bins1=np.histogram(np.hstack((dataframe[f'{cond1} GB enr'].tolist(), dataframe[f'{cond2} GB enr'].tolist())), bins=15)[1]
-    plot1.hist(dataframe[f'{cond1} GB enr'].tolist(), bins1, edgecolor='black', linewidth=0.5, density=True, alpha=0.4, label=cond1)
-    plot1.hist(dataframe[f'{cond2} GB enr'].tolist(), bins1, edgecolor='black', linewidth=0.5, density=True, alpha=0.4, label=cond2)
-    Cond1_med=np.median(dataframe[f'{cond1} GB enr'].tolist())
-    Cond2_med=np.median(dataframe[f'{cond2} GB enr'].tolist())
-    plot1.annotate(f'{cond1} median={round(Cond1_med,2)}', xy=(0.2, 0.9), xycoords='axes fraction', size=15)
-    plot1.annotate(f'{cond2} median={round(Cond2_med,2)}', xy=(0.2, 0.8), xycoords='axes fraction', size=15)    
+    weights1_GB=np.ones_like(dataframe[f'{cond1} GB enr'].tolist())/float(len(dataframe[f'{cond1} GB enr'].tolist()))
+    weights2_GB=np.ones_like(dataframe[f'{cond2} GB enr'].tolist())/float(len(dataframe[f'{cond2} GB enr'].tolist()))
+    plot1.hist(dataframe[f'{cond1} GB enr'].tolist(), bins1, edgecolor='black', linewidth=0.5, weights=weights1_GB, alpha=0.4, label=cond1)
+    plot1.hist(dataframe[f'{cond2} GB enr'].tolist(), bins1, edgecolor='black', linewidth=0.5, weights=weights2_GB, alpha=0.4, label=cond2)
+    Cond1_med=np.mean(dataframe[f'{cond1} GB enr'].tolist())
+    Cond2_med=np.mean(dataframe[f'{cond2} GB enr'].tolist())
+    plot1.annotate(f'{cond1} mean={round(Cond1_med,2)}', xy=(0.2, 0.9), xycoords='axes fraction', size=15)
+    plot1.annotate(f'{cond2} mean={round(Cond2_med,2)}', xy=(0.2, 0.8), xycoords='axes fraction', size=15)    
     plot1.set_xlabel('Enrichment of GCSs', size=14)
     plot1.set_ylabel('Number of TUs', size=14)
     plot1.legend(loc='center right', frameon=False, fontsize=15)
@@ -307,12 +311,14 @@ def plot_GCSs_enr_distr(cond1, cond2, dataframe, sign, thr_pvalue, thr_logFC, ou
     #Plot distribution of GCSs enrichment in DS.
     plot2=plt.subplot(133)
     bins2=np.histogram(np.hstack((dataframe[f'{cond1} DS enr'].tolist(), dataframe[f'{cond2} DS enr'].tolist())), bins=15)[1]
-    plot2.hist(dataframe[f'{cond1} DS enr'].tolist(), bins2, edgecolor='black', linewidth=0.5, density=True, alpha=0.4, label=cond1)
-    plot2.hist(dataframe[f'{cond2} DS enr'].tolist(), bins2, edgecolor='black', linewidth=0.5, density=True, alpha=0.4, label=cond2)
-    Cond1_med=np.median(dataframe[f'{cond1} DS enr'].tolist())
-    Cond2_med=np.median(dataframe[f'{cond2} DS enr'].tolist())
-    plot2.annotate(f'{cond1} median={round(Cond1_med,2)}', xy=(0.2, 0.9), xycoords='axes fraction', size=15)
-    plot2.annotate(f'{cond2} median={round(Cond2_med,2)}', xy=(0.2, 0.8), xycoords='axes fraction', size=15)        
+    weights1_DS=np.ones_like(dataframe[f'{cond1} DS enr'].tolist())/float(len(dataframe[f'{cond1} DS enr'].tolist()))
+    weights2_DS=np.ones_like(dataframe[f'{cond2} DS enr'].tolist())/float(len(dataframe[f'{cond2} DS enr'].tolist()))    
+    plot2.hist(dataframe[f'{cond1} DS enr'].tolist(), bins2, edgecolor='black', linewidth=0.5, weights=weights1_DS, alpha=0.4, label=cond1)
+    plot2.hist(dataframe[f'{cond2} DS enr'].tolist(), bins2, edgecolor='black', linewidth=0.5, weights=weights2_DS, alpha=0.4, label=cond2)
+    Cond1_med=np.mean(dataframe[f'{cond1} DS enr'].tolist())
+    Cond2_med=np.mean(dataframe[f'{cond2} DS enr'].tolist())
+    plot2.annotate(f'{cond1} mean={round(Cond1_med,2)}', xy=(0.2, 0.9), xycoords='axes fraction', size=15)
+    plot2.annotate(f'{cond2} mean={round(Cond2_med,2)}', xy=(0.2, 0.8), xycoords='axes fraction', size=15)        
     plot2.set_xlabel('Enrichment of GCSs', size=14)
     plot2.set_ylabel('Number of TUs', size=14) 
     plot2.legend(loc='center right', frameon=False, fontsize=15)
@@ -321,12 +327,7 @@ def plot_GCSs_enr_distr(cond1, cond2, dataframe, sign, thr_pvalue, thr_logFC, ou
     plt.tight_layout()
     plt.show() 
     
-    translate=0
-    if sign==">":
-        translate="more"
-    elif sign=="<":
-        translate="less"
-    plt.savefig(f'{outpath}Distribution_of_GCSs_enr_US_GB_DS_{cond1}_{translate}_{cond2}_p_value_{thr_pvalue}_logFC_{thr_logFC}.png', dpi=400, figsize=(9, 3))
+    plt.savefig(f'{outpath}Distribution_of_GCSs_enr_US_GB_DS_{cond1}_{cond2}_{sign}_p_value_{thr_pvalue}_logFC_{thr_logFC}.png', dpi=400, figsize=(9.7, 3))
     return
 
 
@@ -337,6 +338,8 @@ def plot_GCSs_enr_distr(cond1, cond2, dataframe, sign, thr_pvalue, thr_logFC, ou
 
 def read_difexp_data_merge_transcription_gcss(path_to_diffexpr, Merged_transcription_GCSs_data, thr_pvalue, thr_logFC, cond1, cond2, outpath):
     #Read dif exp data and merge.
+    #In the data first sample ID in a file name is a starting point (denominator in the ratio of transcription values),
+    #while the second ID is a destination (numerator in the ratio of transcription values). 
     Difexp_data=pd.read_csv(path_to_diffexpr, header=0, sep='\t', index_col=False)
     #print(Difexp_data.head(5))
     GCSs_transcription_difexp_data=pd.merge(Merged_transcription_GCSs_data, Difexp_data, on=['Gene_name'])
@@ -370,8 +373,8 @@ def read_difexp_data_merge_transcription_gcss(path_to_diffexpr, Merged_transcrip
     Genes_decreasing=GCSs_transcription_difexp_data[(GCSs_transcription_difexp_data['PValue']<thr_pvalue) & (GCSs_transcription_difexp_data['logFC']<-thr_logFC)] 
     print(Genes_decreasing.sort_values(by='logFC', ascending=True).head(10))
     
-    plot_GCSs_enr_distr(cond1, cond2, Genes_increasing, '<', thr_pvalue, thr_logFC, outpath)
-    plot_GCSs_enr_distr(cond1, cond2, Genes_decreasing, '>', thr_pvalue, thr_logFC, outpath)
+    plot_GCSs_enr_distr(cond1, cond2, Genes_increasing, 'increase', thr_pvalue, thr_logFC, outpath)
+    plot_GCSs_enr_distr(cond1, cond2, Genes_decreasing, 'decrease', thr_pvalue, thr_logFC, outpath)
     
     return GCSs_transcription_difexp_data
 
@@ -394,12 +397,14 @@ def wrap_functions(TUs_pathin, GCSs_pathin, window_length, genome_len_dc, GCSs_n
     GCSs_enrichment_and_TUs(GCSs_enrichment_array, GCSs_enrichment_names, Max_enrichment, outpath + "Enrichment_of_GCSs_all_genes.png")    
     
     #Select subset of genes by expression level or other conditions.
-    GCSs_enrichment_array, GCSs_enrichment_names, Max_enrichment=select_data_by_transcr(Transcription_GCSs_data_with_enrichment, 'SP', 'EP', threshold)
-    GCSs_enrichment_and_TUs(GCSs_enrichment_array, GCSs_enrichment_names, Max_enrichment, f'{outpath}Enrichment_of_GCSs_SP_vs_EP_thr_{threshold}_eq_len_inc.png') 
+    GCSs_enrichment_array, GCSs_enrichment_names, Max_enrichment=select_data_by_transcr(Transcription_GCSs_data_with_enrichment, 'EP', 'SP', threshold)
+    GCSs_enrichment_and_TUs(GCSs_enrichment_array, GCSs_enrichment_names, Max_enrichment, f'{outpath}Enrichment_of_GCSs_EP_vs_SP_thr_{threshold}_eq_len_inc.png') 
     
     #Read dif exp data, select highly expressed genes, plot distributions of GCSs enrichment.
     read_difexp_data_merge_transcription_gcss(path_to_diffexpr, Transcription_GCSs_data_with_enrichment, thr_pvalue, thr_logFC, 'EP', 'SP', outpath)
     return
+
+
 
 wrap_functions(path_to_TUs_sets_no_rRNA_tRNA, path_to_GCSs_number, Window_length, Genome_len_dc, GCSs_num_dict, 5, path_dif_exp, 0.001, 2, GCSs_and_transcription_outpath)
 

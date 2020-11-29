@@ -24,13 +24,13 @@ from matplotlib import cm as cm
 
 
 #PWD
-PWD="F:\E_coli_RNA-Seq\E_coli_DY330_RNA-Seq\\"
+PWD="C:\\Users\sutor\OneDrive\ThinkPad_working\Sutor\Science\E_coli_RNA-Seq\\"
 #Old expression data.
-Old_expression_input="F:\E_coli_RNA-Seq\E_coli_DY330_RNA-Seq\Expression_data\Incarnato_data\DOOR_Mu_del_cor_genes_expression.bed"
+Old_expression_input="C:\\Users\sutor\OneDrive\ThinkPad_working\Sutor\Science\E_coli_RNA-Seq\Expression_data\Incarnato_data\DOOR_Mu_del_cor_genes_expression.bed"
 #tRNA list.
-tRNA_list_path="F:\E_coli_RNA-Seq\E_coli_DY330_RNA-Seq\Expression_data\DY330_genes\\tRNA_genes_list.txt"
+tRNA_list_path="C:\\Users\sutor\OneDrive\ThinkPad_working\Sutor\Science\E_coli_RNA-Seq\Expression_data\DY330_genes\\tRNA_genes_list.txt"
 #rRNA list.
-rRNA_list_path="F:\E_coli_RNA-Seq\E_coli_DY330_RNA-Seq\Expression_data\DY330_genes\\rRNA_genes_list.txt"
+rRNA_list_path="C:\\Users\sutor\OneDrive\ThinkPad_working\Sutor\Science\E_coli_RNA-Seq\Expression_data\DY330_genes\\rRNA_genes_list.txt"
 
 
 #######
@@ -95,12 +95,12 @@ def add_old_expression(datasets_merged, old_expression_data_path, output_path):
 
 #Plot diagonal correlation matrix.
 def correlation_matrix(df, cor_method, title, outpath):
-    fig=plt.figure(figsize=(8,8), dpi=100)
+    fig=plt.figure(figsize=(6,6), dpi=100)
     ax1=fig.add_subplot(111)
     cmap=cm.get_cmap('rainbow', 30)
     #print(df)
     #print(df.corr(method=cor_method))
-    cax=ax1.imshow(df.corr(method=cor_method), interpolation="nearest", cmap=cmap, norm=None, vmin=0.98, vmax=1)
+    cax=ax1.imshow(df.corr(method=cor_method), interpolation="nearest", cmap=cmap, norm=None, vmin=0.9, vmax=1)
     ax1.grid(True, which='minor', linestyle="--", linewidth=0.5, color="black")
     plt.title(title)
     labels=list(df)
@@ -110,9 +110,9 @@ def correlation_matrix(df, cor_method, title, outpath):
     ax1.set_yticklabels(labels, fontsize=12)
     #Add colorbar, make sure to specify tick locations to match desired ticklabels.
     #Full scale:[-1.00, -0.95, -0.90, -0.85, -0.80, -0.75, -0.70, -0.65, -0.60, -0.55, -0.50, -0.45, -0.40, -0.35, -0.30, -0.25, -0.20, -0.15, -0.10, -0.05, 0.00, 0.05, 0.10, 0.15, 0.20, 0.25, 0.30, 0.35, 0.40, 0.45, 0.50, 0.55, 0.60, 0.65, 0.70, 0.75, 0.80, 0.85, 0.90, 0.95, 1.00])
-    fig.colorbar(cax, ticks=[-1.00, -0.90, -0.80, -0.70, -0.60, -0.50, -0.40, -0.30, -0.20, -0.10, 0.00, 0.10, 0.20, 0.30, 0.40, 0.50, 0.60, 0.70, 0.80, 0.90, 1.00], shrink=0.7)
+    fig.colorbar(cax, ticks=[-1.00, -0.90, -0.80, -0.70, -0.60, -0.50, -0.40, -0.30, -0.20, -0.10, 0.00, 0.10, 0.20, 0.30, 0.40, 0.50, 0.60, 0.70, 0.80, 0.90, 0.91, 0.92, 0.93, 0.94, 0.95, 0.96, 0.97, 0.98, 0.99, 1.00], shrink=0.7)
     plt.tight_layout()
-    plt.savefig(outpath, dpi=400, figsize=(8, 8))
+    plt.savefig(outpath, dpi=400, figsize=(6, 6))
     plt.show()
     plt.close()
     return
@@ -128,7 +128,7 @@ def Clustering(df):
     L = sch.linkage(d, method='complete')
     ind = sch.fcluster(L, 0.5*d.max(), 'distance')
     columns = [df.columns.tolist()[i] for i in list((np.argsort(ind)))]
-    df = df.reindex_axis(columns, axis=1)
+    df = df.reindex(columns, axis=1)
     return df
 
 
@@ -222,46 +222,50 @@ def average_replicas_write_door_like_tab(RNA_seq_data_full, Name_ID, data_output
 #######
 
 def wrapper(data_inpath, data_output_path, old_expression_input, tRNA_inpath, rRNA_inpath, Name_ID):
-    DY330_dataset_merged=Open_merge_data(data_inpath, data_output_path)
-    add_old_expression(DY330_dataset_merged, old_expression_input, data_output_path)
+    #DY330_dataset_merged=Open_merge_data(data_inpath, data_output_path)
+    #add_old_expression(DY330_dataset_merged, old_expression_input, data_output_path)
+    #
+    #datasets_merged_no_tRNA, datasets_merged_no_rRNA, datasets_merged_no_rRNA_tRNA=Remove_tRNA_rRNA(data_output_path+"DY330_RNA-Seq_data_merged_FPKM_columns.xlsx",
+    #                                                                                                tRNA_inpath, rRNA_inpath, 
+    #                                                                                                data_output_path+"DY330_RNA-Seq_data_merged_FPKM_columns_no_tRNA.xlsx",
+    #                                                                                                data_output_path+"DY330_RNA-Seq_data_merged_FPKM_columns_no_rRNA.xlsx",
+    #                                                                                                data_output_path+"DY330_RNA-Seq_data_merged_FPKM_columns_no_tRNA_rRNA.xlsx")   
+    #
+    #Remove_tRNA_rRNA(data_output_path+"All_RNA-Seq_data_merged_FPKM_columns.xlsx",
+    #                 tRNA_inpath, rRNA_inpath, 
+    #                 data_output_path+"All_RNA-Seq_data_merged_FPKM_columns_no_tRNA.xlsx",
+    #                 data_output_path+"All_RNA-Seq_data_merged_FPKM_columns_no_rRNA.xlsx",
+    #                 data_output_path+"All_RNA-Seq_data_merged_FPKM_columns_no_tRNA_rRNA.xlsx")    
+    #
+    #Read_DF_compare_transcriptomes(data_output_path+"DY330_RNA-Seq_data_merged_FPKM_columns.xlsx", 'G:O', 
+    #                               data_output_path+"Figures\DY330_RNA-Seq_data_merged_FPKM_correlation.png",
+    #                               data_output_path+"Figures\DY330_RNA-Seq_data_merged_counts_correlation_clusterized.png")
+    #
+    #Read_DF_compare_transcriptomes(data_output_path+"All_RNA-Seq_data_merged_FPKM_columns.xlsx", 'G:P', 
+    #                               data_output_path+"Figures\All_RNA-Seq_data_merged_FPKM_correlation.png",
+    #                               data_output_path+"Figures\All_RNA-Seq_data_merged_counts_correlation_clusterized.png")
+    #
+    #Read_DF_compare_transcriptomes(data_output_path+"DY330_RNA-Seq_data_merged_FPKM_columns_no_tRNA_rRNA.xlsx", 'G:O', 
+    #                               data_output_path+"Figures\DY330_RNA-Seq_data_merged_FPKM_correlation_no_tRNA_rRNA.png",
+    #                               data_output_path+"Figures\DY330_RNA-Seq_data_merged_counts_correlation_clusterized_no_tRNA_rRNA.png")
+    #
+    #Read_DF_compare_transcriptomes(data_output_path+"All_RNA-Seq_data_merged_FPKM_columns_no_tRNA_rRNA.xlsx", 'G:P', 
+    #                               data_output_path+"Figures\All_RNA-Seq_data_merged_FPKM_correlation_no_tRNA_rRNA.png",
+    #                               data_output_path+"Figures\All_RNA-Seq_data_merged_counts_correlation_clusterized_no_tRNA_rRNA.png") 
     
-    datasets_merged_no_tRNA, datasets_merged_no_rRNA, datasets_merged_no_rRNA_tRNA=Remove_tRNA_rRNA(data_output_path+"DY330_RNA-Seq_data_merged_FPKM_columns.xlsx",
-                                                                                                    tRNA_inpath, rRNA_inpath, 
-                                                                                                    data_output_path+"DY330_RNA-Seq_data_merged_FPKM_columns_no_tRNA.xlsx",
-                                                                                                    data_output_path+"DY330_RNA-Seq_data_merged_FPKM_columns_no_rRNA.xlsx",
-                                                                                                    data_output_path+"DY330_RNA-Seq_data_merged_FPKM_columns_no_tRNA_rRNA.xlsx")   
+    Read_DF_compare_transcriptomes(data_output_path+"DY330_RNA-Seq_data_merged_FPKM_columns_no_tRNA_rRNA.xlsx", 'G:I', 
+                                   data_output_path+"Figures\EP_RNA-Seq_data_merged_FPKM_correlation_no_tRNA_rRNA.png",
+                                   data_output_path+"Figures\EP_RNA-Seq_data_merged_counts_correlation_clusterized_no_tRNA_rRNA.png")     
     
-    Remove_tRNA_rRNA(data_output_path+"All_RNA-Seq_data_merged_FPKM_columns.xlsx",
-                     tRNA_inpath, rRNA_inpath, 
-                     data_output_path+"All_RNA-Seq_data_merged_FPKM_columns_no_tRNA.xlsx",
-                     data_output_path+"All_RNA-Seq_data_merged_FPKM_columns_no_rRNA.xlsx",
-                     data_output_path+"All_RNA-Seq_data_merged_FPKM_columns_no_tRNA_rRNA.xlsx")    
-    
-    Read_DF_compare_transcriptomes(data_output_path+"DY330_RNA-Seq_data_merged_FPKM_columns.xlsx", 'G:O', 
-                                   data_output_path+"Figures\DY330_RNA-Seq_data_merged_FPKM_correlation.png",
-                                   data_output_path+"Figures\DY330_RNA-Seq_data_merged_counts_correlation_clusterized.png")
-    
-    Read_DF_compare_transcriptomes(data_output_path+"All_RNA-Seq_data_merged_FPKM_columns.xlsx", 'G:P', 
-                                   data_output_path+"Figures\All_RNA-Seq_data_merged_FPKM_correlation.png",
-                                   data_output_path+"Figures\All_RNA-Seq_data_merged_counts_correlation_clusterized.png")
-    
-    Read_DF_compare_transcriptomes(data_output_path+"DY330_RNA-Seq_data_merged_FPKM_columns_no_tRNA_rRNA.xlsx", 'G:O', 
-                                   data_output_path+"Figures\DY330_RNA-Seq_data_merged_FPKM_correlation_no_tRNA_rRNA.png",
-                                   data_output_path+"Figures\DY330_RNA-Seq_data_merged_counts_correlation_clusterized_no_tRNA_rRNA.png")
-    
-    Read_DF_compare_transcriptomes(data_output_path+"All_RNA-Seq_data_merged_FPKM_columns_no_tRNA_rRNA.xlsx", 'G:P', 
-                                   data_output_path+"Figures\All_RNA-Seq_data_merged_FPKM_correlation_no_tRNA_rRNA.png",
-                                   data_output_path+"Figures\All_RNA-Seq_data_merged_counts_correlation_clusterized_no_tRNA_rRNA.png")    
-    
-    average_replicas_write_door_like_tab(DY330_dataset_merged, Name_ID, data_output_path+"DY330_RNA-Seq_genes_EP_del_cor.txt", 
-                                         data_output_path+"DY330_RNA-Seq_genes_ESP_del_cor.txt", 
-                                         data_output_path+"DY330_RNA-Seq_genes_SP_del_cor.txt")
-    
-    average_replicas_write_door_like_tab(datasets_merged_no_rRNA_tRNA, Name_ID, data_output_path+"DY330_RNA-Seq_genes_no_tRNA_rRNA_EP_del_cor.txt", 
-                                         data_output_path+"DY330_RNA-Seq_genes_no_tRNA_rRNA_ESP_del_cor.txt", 
-                                         data_output_path+"DY330_RNA-Seq_genes_no_tRNA_rRNA_SP_del_cor.txt")    
+    #average_replicas_write_door_like_tab(DY330_dataset_merged, Name_ID, data_output_path+"DY330_RNA-Seq_genes_EP_del_cor.txt", 
+    #                                     data_output_path+"DY330_RNA-Seq_genes_ESP_del_cor.txt", 
+    #                                     data_output_path+"DY330_RNA-Seq_genes_SP_del_cor.txt")
+    #
+    #average_replicas_write_door_like_tab(datasets_merged_no_rRNA_tRNA, Name_ID, data_output_path+"DY330_RNA-Seq_genes_no_tRNA_rRNA_EP_del_cor.txt", 
+    #                                     data_output_path+"DY330_RNA-Seq_genes_no_tRNA_rRNA_ESP_del_cor.txt", 
+    #                                     data_output_path+"DY330_RNA-Seq_genes_no_tRNA_rRNA_SP_del_cor.txt")    
     
     return
 
-wrapper(PWD+"FPKM\\Genes_del_cor\\", PWD+"FPKM_analysis_correct\\Genes_del_cor\\", Old_expression_input, tRNA_list_path, rRNA_list_path, "GeneID")
+wrapper(PWD+"FPKM\\Genes_del_cor\\", PWD+"FPKM_analysis_correct\\UTRs_del_cor\\", Old_expression_input, tRNA_list_path, rRNA_list_path, "GeneID")
 
