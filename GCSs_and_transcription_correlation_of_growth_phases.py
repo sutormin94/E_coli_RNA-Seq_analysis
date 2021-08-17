@@ -20,6 +20,7 @@ from scipy.stats import binom
 from scipy.stats import pearsonr
 import pandas as pd
 
+
 #######
 #Variables to be defined.
 #######
