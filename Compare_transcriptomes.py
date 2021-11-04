@@ -99,8 +99,8 @@ def correlation_matrix(df, cor_method, title, outpath):
     ax1=fig.add_subplot(111)
     cmap=cm.get_cmap('rainbow', 30)
     #print(df)
-    #print(df.corr(method=cor_method))
-    cax=ax1.imshow(df.corr(method=cor_method), interpolation="nearest", cmap=cmap, norm=None, vmin=0.9, vmax=1)
+    df_cor_matrix=df.corr(method=cor_method)
+    cax=ax1.imshow(df_cor_matrix, interpolation="nearest", cmap=cmap, norm=None, vmin=0.9, vmax=1)
     ax1.grid(True, which='minor', linestyle="--", linewidth=0.5, color="black")
     plt.title(title)
     labels=list(df)
@@ -108,6 +108,10 @@ def correlation_matrix(df, cor_method, title, outpath):
     ax1.set_yticks(np.arange(len(labels)))    
     ax1.set_xticklabels(labels, fontsize=12, rotation=90)
     ax1.set_yticklabels(labels, fontsize=12)
+    #Create text annotation for heatmap pixels.
+    for i in range(len(labels)):
+        for j in range(len(labels)):
+            text = ax1.text(i, j, round(df_cor_matrix[labels[i]][labels[j]], 3), ha="center", va="center", color="black")        
     #Add colorbar, make sure to specify tick locations to match desired ticklabels.
     #Full scale:[-1.00, -0.95, -0.90, -0.85, -0.80, -0.75, -0.70, -0.65, -0.60, -0.55, -0.50, -0.45, -0.40, -0.35, -0.30, -0.25, -0.20, -0.15, -0.10, -0.05, 0.00, 0.05, 0.10, 0.15, 0.20, 0.25, 0.30, 0.35, 0.40, 0.45, 0.50, 0.55, 0.60, 0.65, 0.70, 0.75, 0.80, 0.85, 0.90, 0.95, 1.00])
     fig.colorbar(cax, ticks=[-1.00, -0.90, -0.80, -0.70, -0.60, -0.50, -0.40, -0.30, -0.20, -0.10, 0.00, 0.10, 0.20, 0.30, 0.40, 0.50, 0.60, 0.70, 0.80, 0.90, 0.91, 0.92, 0.93, 0.94, 0.95, 0.96, 0.97, 0.98, 0.99, 1.00], shrink=0.7)
@@ -115,7 +119,7 @@ def correlation_matrix(df, cor_method, title, outpath):
     plt.savefig(outpath, dpi=400, figsize=(6, 6))
     plt.show()
     plt.close()
-    return
+    return df_cor_matrix
 
 #######
 #Identify clusters in a corralation matrix (hierarchy clustering).
