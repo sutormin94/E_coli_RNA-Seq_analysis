@@ -26,25 +26,25 @@ from scipy.stats import binom
 print('Variables to be defined:')
 
 #Input data - GCSs, TAB.
-path_to_GCSs_files={'Gyrase exponential Micro': "F:\E_coli_Topo-Seqs\GCSs_data\Gyrase_EP_Micro_GCSs_trusted_h_s_0.01.txt",
-                    'Gyrase exponential Oxo': "F:\E_coli_Topo-Seqs\GCSs_data\Gyrase_EP_Oxo_GCSs_trusted_h_s_0.01.txt",
-                    'Gyrase exponential RifCfx': "F:\E_coli_Topo-Seqs\GCSs_data\Gyrase_EP_RifCfx_GCSs_trusted_h_s_0.01.txt",
-                    'Gyrase exponential Cfx': "F:\E_coli_Topo-Seqs\GCSs_data\Gyrase_EP_Cfx_10mkM_GCSs_trusted_h_s_0.01.txt",
-                    'Gyrase early stationary Cfx': "F:\E_coli_Topo-Seqs\GCSs_data\Gyrase_Time-course_-3_min_GCSs_trusted_h_s_0.01.txt",
-                    'Gyrase stationary Cfx': "F:\E_coli_Topo-Seqs\GCSs_data\Gyrase_Cfx_stat_trusted_GCSs_h_s_0.01.txt"}  
+path_to_GCSs_files={'Gyrase exponential Micro'     : "C:\\Users\sutor\OneDrive\ThinkPad_working\Sutor\Science\E_coli_Gyrase_growth_phases\GCSs_data\Gyrase_EP_Micro_GCSs_trusted_h_s_0.01.txt",
+                    'Gyrase exponential Oxo'       : "C:\\Users\sutor\OneDrive\ThinkPad_working\Sutor\Science\E_coli_Gyrase_growth_phases\GCSs_data\Gyrase_EP_Oxo_GCSs_trusted_h_s_0.01.txt",
+                    'Gyrase exponential RifCfx'    : "C:\\Users\sutor\OneDrive\ThinkPad_working\Sutor\Science\E_coli_Gyrase_growth_phases\GCSs_data\Gyrase_EP_RifCfx_GCSs_trusted_h_s_0.01.txt",
+                    'Gyrase exponential Cfx'       : "C:\\Users\sutor\OneDrive\ThinkPad_working\Sutor\Science\E_coli_Gyrase_growth_phases\GCSs_data\Gyrase_EP_Cfx_10mkM_GCSs_trusted_h_s_0.01.txt",
+                    'Gyrase early stationary Cfx'  : "C:\\Users\sutor\OneDrive\ThinkPad_working\Sutor\Science\E_coli_Gyrase_growth_phases\GCSs_data\Gyrase_Time-course_-3_min_GCSs_trusted_h_s_0.01.txt",
+                    'Gyrase stationary Cfx'        : "C:\\Users\sutor\OneDrive\ThinkPad_working\Sutor\Science\E_coli_Gyrase_growth_phases\GCSs_data\Gyrase_Cfx_stat_trusted_GCSs_h_s_0.01.txt"}  
 
 #Input data - score, WIG.
-Score_path="C:\Sutor\science\DNA-gyrase\scripts\Gyrase_Topo-seq\Additional_genome_features\E_coli_w3110_G_Mu_score.wig"
+Score_path="C:\\Users\sutor\OneDrive\ThinkPad_working\Sutor\Science\E_coli_Gyrase_Topo-Seq\Scripts\Gyrase_Topo-seq\Additional_genome_features\E_coli_w3110_G_Mu_score.wig"
 #Input data - sets of transcription units.
 path_to_TUs_sets_full={'Exponential phase' : "F:\E_coli_RNA-Seq\E_coli_DY330_RNA-Seq\Expression_data\DY330_genes\DY330_RNA-Seq_genes_EP_del_cor.txt",
                        'Early stationary phase' : "F:\E_coli_RNA-Seq\E_coli_DY330_RNA-Seq\Expression_data\DY330_genes\DY330_RNA-Seq_genes_ESP_del_cor.txt",
                        'Stationary phase' : "F:\E_coli_RNA-Seq\E_coli_DY330_RNA-Seq\Expression_data\DY330_genes\DY330_RNA-Seq_genes_SP_del_cor.txt",
                        'Exponential phase old' : "F:\E_coli_RNA-Seq\E_coli_DY330_RNA-Seq\Expression_data\Incarnato_data\DOOR_Mu_del_cor_genes_expression.txt"}
 
-path_to_TUs_sets_no_rRNA_tRNA={'Exponential phase' : "F:\E_coli_RNA-Seq\E_coli_DY330_RNA-Seq\Expression_data\DY330_operons\DY330_RNA-Seq_operons_no_tRNA_rRNA_EP_del_cor.txt",
-                               'Early stationary phase' : "F:\E_coli_RNA-Seq\E_coli_DY330_RNA-Seq\Expression_data\DY330_operons\DY330_RNA-Seq_operons_no_tRNA_rRNA_ESP_del_cor.txt",
-                               'Stationary phase' : "F:\E_coli_RNA-Seq\E_coli_DY330_RNA-Seq\Expression_data\DY330_operons\DY330_RNA-Seq_operons_no_tRNA_rRNA_SP_del_cor.txt",
-                               'Exponential phase old' : "F:\E_coli_RNA-Seq\E_coli_DY330_RNA-Seq\Expression_data\Incarnato_data\DOOR_Mu_del_cor_operons_expression_no_tRNA_rRNA.txt"}
+path_to_TUs_sets_no_rRNA_tRNA={'Exponential phase'      : "C:\\Users\sutor\OneDrive\ThinkPad_working\Sutor\Science\E_coli_RNA-Seq\Expression_data\DY330_operons\DY330_RNA-Seq_operons_no_tRNA_rRNA_EP_del_cor.txt",
+                               'Early stationary phase' : "C:\\Users\sutor\OneDrive\ThinkPad_working\Sutor\Science\E_coli_RNA-Seq\Expression_data\DY330_operons\DY330_RNA-Seq_operons_no_tRNA_rRNA_ESP_del_cor.txt",
+                               'Stationary phase'       : "C:\\Users\sutor\OneDrive\ThinkPad_working\Sutor\Science\E_coli_RNA-Seq\Expression_data\DY330_operons\DY330_RNA-Seq_operons_no_tRNA_rRNA_SP_del_cor.txt",
+                               'Exponential phase old'  : "C:\\Users\sutor\OneDrive\ThinkPad_working\Sutor\Science\E_coli_RNA-Seq\Expression_data\Incarnato_data\DOOR_Mu_del_cor_operons_expression_no_tRNA_rRNA.txt"}
 
 path_to_TUs_sets_no_rRNA={'Exponential phase' : "F:\E_coli_RNA-Seq\E_coli_DY330_RNA-Seq\Expression_data\DY330_operons\DY330_RNA-Seq_operons_no_rRNA_EP_del_cor.txt",
                           'Early stationary phase' : "F:\E_coli_RNA-Seq\E_coli_DY330_RNA-Seq\Expression_data\DY330_operons\DY330_RNA-Seq_operons_no_rRNA_ESP_del_cor.txt",
@@ -63,36 +63,36 @@ Genome_length=4647454
 
 
 #Path for TU analysis output.
-TU_analysis_outpath_1="F:\\Topo_data_new_expression\\TU_based_analysis\\Gyrase\\Correction_on_GCSs_calling_thr\\Operons_del_cor_1000bp\\"
-if not os.path.exists(TU_analysis_outpath_1):
-    os.makedirs(TU_analysis_outpath_1)
-TU_analysis_outpath_2="F:\\Topo_data_new_expression\\TU_based_analysis\\Gyrase\\Correction_on_GCSs_calling_thr\\Genes_del_cor_5000bp\GCSs_US_GB_DS\\"
-if not os.path.exists(TU_analysis_outpath_2):
-    os.makedirs(TU_analysis_outpath_2)
-TU_analysis_outpath_3="F:\\Topo_data_new_expression\\TU_based_analysis\\Gyrase\\Correction_on_GCSs_calling_thr\\Operons_del_cor_no_rRNA_tRNA_1000bp\\"
-if not os.path.exists(TU_analysis_outpath_3):
-    os.makedirs(TU_analysis_outpath_3)
-TU_analysis_outpath_4="F:\\Topo_data_new_expression\\TU_based_analysis\\Gyrase\\Correction_on_GCSs_calling_thr\\Operons_del_cor_no_rRNA_tRNA_5000bp\GCSs_US_GB_DS\\"
+#TU_analysis_outpath_1="F:\\Topo_data_new_expression\\TU_based_analysis\\Gyrase\\Correction_on_GCSs_calling_thr\\Operons_del_cor_1000bp\\"
+#if not os.path.exists(TU_analysis_outpath_1):
+#    os.makedirs(TU_analysis_outpath_1)
+#TU_analysis_outpath_2="F:\\Topo_data_new_expression\\TU_based_analysis\\Gyrase\\Correction_on_GCSs_calling_thr\\Genes_del_cor_5000bp\GCSs_US_GB_DS\\"
+#if not os.path.exists(TU_analysis_outpath_2):
+#    os.makedirs(TU_analysis_outpath_2)
+#TU_analysis_outpath_3="F:\\Topo_data_new_expression\\TU_based_analysis\\Gyrase\\Correction_on_GCSs_calling_thr\\Operons_del_cor_no_rRNA_tRNA_1000bp\\"
+#if not os.path.exists(TU_analysis_outpath_3):
+#    os.makedirs(TU_analysis_outpath_3)
+TU_analysis_outpath_4="C:\\Users\sutor\OneDrive\ThinkPad_working\Sutor\Science\E_coli_Gyrase_growth_phases\GSCs_and_transcription\GCSs_US_GB_DS\\"
 if not os.path.exists(TU_analysis_outpath_4):
     os.makedirs(TU_analysis_outpath_4)   
-TU_analysis_outpath_5="F:\\Topo_data_new_expression\\TU_based_analysis\\Gyrase\\Correction_on_GCSs_calling_thr\\Operons_del_cor_no_rRNA_1000bp\\"
-if not os.path.exists(TU_analysis_outpath_5):
-    os.makedirs(TU_analysis_outpath_5)
-TU_analysis_outpath_6="F:\\Topo_data_new_expression\\TU_based_analysis\\Gyrase\\Correction_on_GCSs_calling_thr\\Operons_del_cor_no_rRNA_5000bp\\"
-if not os.path.exists(TU_analysis_outpath_6):
-    os.makedirs(TU_analysis_outpath_6)  
-TU_analysis_outpath_7="F:\\Topo_data_new_expression\\TU_based_analysis\\Gyrase\\Correction_on_GCSs_calling_thr\\Operons_del_cor_no_tRNA_1000bp\\"
-if not os.path.exists(TU_analysis_outpath_7):
-    os.makedirs(TU_analysis_outpath_7)
-TU_analysis_outpath_8="F:\\Topo_data_new_expression\\TU_based_analysis\\Gyrase\\Correction_on_GCSs_calling_thr\\Operons_del_cor_no_tRNA_5000bp\\"
-if not os.path.exists(TU_analysis_outpath_8):
-    os.makedirs(TU_analysis_outpath_8)  
-TU_analysis_outpath_9="F:\\Topo_data_new_expression\\TU_based_analysis\\Gyrase\\Correction_on_GCSs_calling_thr\\Genes_del_cor_no_rRNA_rpsl_operon_5000bp\\"
-if not os.path.exists(TU_analysis_outpath_9):
-    os.makedirs(TU_analysis_outpath_9) 
-TU_analysis_outpath_10="F:\\Topo_data_new_expression\\TU_based_analysis\\Gyrase\\Correction_on_GCSs_calling_thr\\Genes_del_cor_no_rRNA_rpsl_operon_5000bp\\"
-if not os.path.exists(TU_analysis_outpath_10):
-    os.makedirs(TU_analysis_outpath_10) 
+#TU_analysis_outpath_5="F:\\Topo_data_new_expression\\TU_based_analysis\\Gyrase\\Correction_on_GCSs_calling_thr\\Operons_del_cor_no_rRNA_1000bp\\"
+#if not os.path.exists(TU_analysis_outpath_5):
+#    os.makedirs(TU_analysis_outpath_5)
+#TU_analysis_outpath_6="F:\\Topo_data_new_expression\\TU_based_analysis\\Gyrase\\Correction_on_GCSs_calling_thr\\Operons_del_cor_no_rRNA_5000bp\\"
+#if not os.path.exists(TU_analysis_outpath_6):
+#    os.makedirs(TU_analysis_outpath_6)  
+#TU_analysis_outpath_7="F:\\Topo_data_new_expression\\TU_based_analysis\\Gyrase\\Correction_on_GCSs_calling_thr\\Operons_del_cor_no_tRNA_1000bp\\"
+#if not os.path.exists(TU_analysis_outpath_7):
+#    os.makedirs(TU_analysis_outpath_7)
+#TU_analysis_outpath_8="F:\\Topo_data_new_expression\\TU_based_analysis\\Gyrase\\Correction_on_GCSs_calling_thr\\Operons_del_cor_no_tRNA_5000bp\\"
+#if not os.path.exists(TU_analysis_outpath_8):
+#    os.makedirs(TU_analysis_outpath_8)  
+#TU_analysis_outpath_9="F:\\Topo_data_new_expression\\TU_based_analysis\\Gyrase\\Correction_on_GCSs_calling_thr\\Genes_del_cor_no_rRNA_rpsl_operon_5000bp\\"
+#if not os.path.exists(TU_analysis_outpath_9):
+#    os.makedirs(TU_analysis_outpath_9) 
+#TU_analysis_outpath_10="F:\\Topo_data_new_expression\\TU_based_analysis\\Gyrase\\Correction_on_GCSs_calling_thr\\Genes_del_cor_no_rRNA_rpsl_operon_5000bp\\"
+#if not os.path.exists(TU_analysis_outpath_10):
+#    os.makedirs(TU_analysis_outpath_10) 
     
 
 #Input data - sets of intervals.
@@ -121,9 +121,9 @@ path_to_intervals_sets_3={'MatP Ter': "C:\Sutor\science\DNA-gyrase\scripts\Gyras
 path_to_intervals_sets_4={'US of rRNA': "F:\\Topo_data_new_expression\\TU_based_analysis\\Gyrase\\Correction_on_GCSs_calling_thr\\rRNA_silent\\US_of_rRNA_D_E.broadPeak"}
 
 #Path for intervals analysis output.
-Intervals_analysis_outpath="F:\\Topo_data_new_expression\\TU_based_analysis\\Gyrase\\Correction_on_GCSs_calling_thr\\rRNA_silent\\"
-if not os.path.exists(Intervals_analysis_outpath):
-    os.makedirs(Intervals_analysis_outpath)
+#Intervals_analysis_outpath="F:\\Topo_data_new_expression\\TU_based_analysis\\Gyrase\\Correction_on_GCSs_calling_thr\\rRNA_silent\\"
+#if not os.path.exists(Intervals_analysis_outpath):
+#    os.makedirs(Intervals_analysis_outpath)
  
  
 '''Test for ratio of Poisson intensities in two independent samples

@@ -17,6 +17,7 @@ import matplotlib.pyplot as plt
 from matplotlib import cm as cm
 from matplotlib import gridspec
 import numpy as np
+import scipy
 from scipy.stats import binom
 from scipy.stats import pearsonr
 import pandas as pd
@@ -29,15 +30,15 @@ import math
 print('Variables to be defined:')
 
 #Path to TUs sets with transcription level.
-path_to_TUs_sets_no_rRNA_tRNA={'EP' : "D:\Sutormin\HDD_WD_recovered_07_11_19\\34148\E_coli_RNA-Seq\E_coli_DY330_RNA-Seq\Expression_data\DY330_genes\DY330_RNA-Seq_genes_no_tRNA_rRNA_EP_del_cor.txt",
-                               'ESP' : "D:\Sutormin\HDD_WD_recovered_07_11_19\\34148\E_coli_RNA-Seq\E_coli_DY330_RNA-Seq\Expression_data\DY330_genes\DY330_RNA-Seq_genes_no_tRNA_rRNA_ESP_del_cor.txt",
-                               'SP' : "D:\Sutormin\HDD_WD_recovered_07_11_19\\34148\E_coli_RNA-Seq\E_coli_DY330_RNA-Seq\Expression_data\DY330_genes\DY330_RNA-Seq_genes_no_tRNA_rRNA_SP_del_cor.txt"}
+path_to_TUs_sets_no_rRNA_tRNA={'EP'  : "C:\\Users\sutor\OneDrive\ThinkPad_working\Sutor\Science\E_coli_RNA-Seq\Expression_data\DY330_genes\DY330_RNA-Seq_genes_no_tRNA_rRNA_EP_del_cor.txt",
+                               'ESP' : "C:\\Users\sutor\OneDrive\ThinkPad_working\Sutor\Science\E_coli_RNA-Seq\Expression_data\DY330_genes\DY330_RNA-Seq_genes_no_tRNA_rRNA_ESP_del_cor.txt",
+                               'SP'  : "C:\\Users\sutor\OneDrive\ThinkPad_working\Sutor\Science\E_coli_RNA-Seq\Expression_data\DY330_genes\DY330_RNA-Seq_genes_no_tRNA_rRNA_SP_del_cor.txt"}
 
 #Path to GCSs number in US, GB, DS of TUs.
-path_to_GCSs_number="D:\Sutormin\HDD_WD_recovered_07_11_19\\34148\Topo_data_new_expression\TU_based_analysis\Gyrase\Correction_on_GCSs_calling_thr\Genes_del_cor_no_rRNA_tRNA_5000bp\GCSs_US_GB_DS\Early stationary phase_numbers_of_associated_GCSs_US_GB_DS.txt"
+path_to_GCSs_number="C:\\Users\sutor\OneDrive\ThinkPad_working\Sutor\Science\E_coli_Gyrase_growth_phases\Data_analysis\Genes_del_cor_no_rRNA_tRNA_5000bp\GCSs_US_GB_DS\Early stationary phase_numbers_of_associated_GCSs_US_GB_DS.txt"
 
 #Path to differential expression data (edgeR table).
-path_dif_exp="D:\Sutormin\HDD_WD_recovered_07_11_19\\34148\E_coli_RNA-Seq\E_coli_DY330_RNA-Seq\FPKM_analysis_correct\Genes_del_cor\EdgeR_analysis_dif_expression\E_vs_S_DE_no_tRNA_rRNA.txt"
+path_dif_exp="C:\\Users\sutor\OneDrive\ThinkPad_working\Sutor\Science\E_coli_RNA-Seq\FPKM_analysis_correct\Genes_del_cor\EdgeR_analysis_dif_expression\E_vs_S_DE_no_tRNA_rRNA.txt"
 
 #Genome length, bp
 Genome_len=4647454
@@ -51,7 +52,7 @@ GCSs_num_dict={'EP' : 1673,
                'SP': 3508}
 
 #Outpath.
-GCSs_and_transcription_outpath="C:\\Users\sutor\OneDrive\ThinkPad_working\Sutor\Science\E_coli_Gyrase_growth_phases\Data_analysis\Genes_del_cor_no_rRNA_tRNA_5000bp\\"
+GCSs_and_transcription_outpath="C:\\Users\sutor\OneDrive\ThinkPad_working\Sutor\Science\E_coli_Gyrase_growth_phases\GSCs_and_transcription\GCSs_DS\\"
 if not os.path.exists(GCSs_and_transcription_outpath):
     os.makedirs(GCSs_and_transcription_outpath)
     
@@ -293,6 +294,10 @@ def plot_GCSs_enr_distr(cond1, cond2, dataframe, sign, thr_pvalue, thr_logFC, ou
     plot0.set_ylabel('Number of TUs', size=14)
     plot0.legend(loc='center right', frameon=False, fontsize=15)
     plot0.set_title('US', size=20)
+    print(f'Working with {sign} genes set.')
+    print(f'Mann-Whitney U test statistics for comparison of {cond1} vs {cond2} GCSs enrichments in US: {scipy.stats.mannwhitneyu(dataframe[f"{cond1} US enr"].tolist(), dataframe[f"{cond2} US enr"].tolist())}')
+    print(f'T-test test statistics for comparison of {cond1} vs {cond2} GCSs enrichments in US: {scipy.stats.ttest_ind(dataframe[f"{cond1} US enr"].tolist(), dataframe[f"{cond2} US enr"].tolist())}')    
+    
     #Plot distribution of GCSs enrichment in GB.
     plot1=plt.subplot(132)
     bins1=np.histogram(np.hstack((dataframe[f'{cond1} GB enr'].tolist(), dataframe[f'{cond2} GB enr'].tolist())), bins=15)[1]
@@ -308,6 +313,9 @@ def plot_GCSs_enr_distr(cond1, cond2, dataframe, sign, thr_pvalue, thr_logFC, ou
     plot1.set_ylabel('Number of TUs', size=14)
     plot1.legend(loc='center right', frameon=False, fontsize=15)
     plot1.set_title('GB', size=20)
+    print(f'Mann-Whitney U test statistics for comparison of {cond1} vs {cond2} GCSs enrichments in GB: {scipy.stats.mannwhitneyu(dataframe[f"{cond1} GB enr"].tolist(), dataframe[f"{cond2} GB enr"].tolist())}')
+    print(f'T-test test statistics for comparison of {cond1} vs {cond2} GCSs enrichments in GB: {scipy.stats.ttest_ind(dataframe[f"{cond1} GB enr"].tolist(), dataframe[f"{cond2} GB enr"].tolist())}')
+    
     #Plot distribution of GCSs enrichment in DS.
     plot2=plt.subplot(133)
     bins2=np.histogram(np.hstack((dataframe[f'{cond1} DS enr'].tolist(), dataframe[f'{cond2} DS enr'].tolist())), bins=15)[1]
@@ -323,6 +331,9 @@ def plot_GCSs_enr_distr(cond1, cond2, dataframe, sign, thr_pvalue, thr_logFC, ou
     plot2.set_ylabel('Number of TUs', size=14) 
     plot2.legend(loc='center right', frameon=False, fontsize=15)
     plot2.set_title('DS', size=20)
+    print(f'Mann-Whitney U test statistics for comparison of {cond1} vs {cond2} GCSs enrichments in DS: {scipy.stats.mannwhitneyu(dataframe[f"{cond1} DS enr"].tolist(), dataframe[f"{cond2} DS enr"].tolist())}')
+    print(f'T-test test statistics for comparison of {cond1} vs {cond2} GCSs enrichments in DS: {scipy.stats.ttest_ind(dataframe[f"{cond1} DS enr"].tolist(), dataframe[f"{cond2} DS enr"].tolist())}')
+    
     #fig.suptitle(f'Transcription level {cond1}{sign}{cond2}\n\n\n\n  1', fontsize=16)
     plt.tight_layout()
     plt.show() 
@@ -401,7 +412,7 @@ def wrap_functions(TUs_pathin, GCSs_pathin, window_length, genome_len_dc, GCSs_n
     GCSs_enrichment_and_TUs(GCSs_enrichment_array, GCSs_enrichment_names, Max_enrichment, f'{outpath}Enrichment_of_GCSs_EP_vs_SP_thr_{threshold}_eq_len_inc.png') 
     
     #Read dif exp data, select highly expressed genes, plot distributions of GCSs enrichment.
-    read_difexp_data_merge_transcription_gcss(path_to_diffexpr, Transcription_GCSs_data_with_enrichment, thr_pvalue, thr_logFC, 'EP', 'SP', outpath)
+    read_difexp_data_merge_transcription_gcss(path_to_diffexpr, Transcription_GCSs_data_with_enrichment, thr_pvalue, thr_logFC, 'EP', 'ESP', outpath)
     return
 
 
@@ -409,7 +420,7 @@ def wrap_functions(TUs_pathin, GCSs_pathin, window_length, genome_len_dc, GCSs_n
 wrap_functions(path_to_TUs_sets_no_rRNA_tRNA, path_to_GCSs_number, Window_length, Genome_len_dc, GCSs_num_dict, 5, path_dif_exp, 0.001, 2, GCSs_and_transcription_outpath)
 
 
-#wrap_functions(path_to_TUs_sets_no_rRNA_tRNA, path_to_GCSs_number, Window_length, Genome_len_dc, GCSs_num_dict, 5, GCSs_and_transcription_outpath)
+#wrap_functions(path_to_TUs_sets_no_rRNA_tRNA, path_to_GCSs_number, Window_length, Genome_len_dc, GCSs_num_dict, 5, path_dif_exp, 0.001, 1, GCSs_and_transcription_outpath)
 #wrap_functions(path_to_TUs_sets_no_rRNA_tRNA, path_to_GCSs_number, Window_length, Genome_len_dc, GCSs_num_dict, 10, GCSs_and_transcription_outpath)
 #wrap_functions(path_to_TUs_sets_no_rRNA_tRNA, path_to_GCSs_number, Window_length, Genome_len_dc, GCSs_num_dict, 20, GCSs_and_transcription_outpath)
 #wrap_functions(path_to_TUs_sets_no_rRNA_tRNA, path_to_GCSs_number, Window_length, Genome_len_dc, GCSs_num_dict, 50, GCSs_and_transcription_outpath)
