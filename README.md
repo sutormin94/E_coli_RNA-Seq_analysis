@@ -1,5 +1,6 @@
 # Transcription_and_genome_features
-Exploring genome features (binding/cleavage sites) of *E. coli W3110* genome in the context of transcription.
+
+Exploring genome features (binding/cleavage sites) of *E. coli* W3110 genome in the context of transcription
 
 This repository contains a set of bash and python scripts which were used for RNA-Seq data analysis and visualization. 
 Raw sequencing data and some processed files can be retrieved from GEO datasets with accession GSE181687.
